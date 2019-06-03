@@ -167,6 +167,29 @@ export interface TestRunFinishedEvent {
 }
 
 /**
+ * Additional context associated with a test, suite, or collection. The properties set on this
+ * object can be used in the `when` clause of a context menu item definition. The `when` clause
+ * can determine if a particular property is set to `true` using the condition
+ * `viewItem =~ /\bext_a_b_c\b/`, where `a.b.c` is the path to the property.
+ */
+export interface TestContext {
+	[key: string]: TestContextProperty;
+}
+
+/**
+ * The value of a property on a {@link TestContext} object.
+ */
+export type TestContextProperty = TestContext | boolean | undefined;
+
+/**
+ * Tree view node for a test, suite, or collection. This object is passed as the argument to the
+ * command handler of a context menu item for a tree view item. 
+ */
+export interface TestTreeNode {
+	readonly info: TestSuiteInfo | TestInfo;
+}
+
+/**
  * Information about a test suite.
  */
 export interface TestSuiteInfo {
@@ -195,6 +218,8 @@ export interface TestSuiteInfo {
 	line?: number;
 
 	children: (TestSuiteInfo | TestInfo)[];
+
+	context?: any;
 }
 
 /**
@@ -227,6 +252,8 @@ export interface TestInfo {
 
 	/** Indicates whether this test will be skipped during test runs */
 	skipped?: boolean;
+
+	context?: any;
 }
 
 /**
